@@ -4,6 +4,7 @@ function! VimCallGraph()
   let vcg.function_pattern = '^\s*fu\%[nction]!\?\s\+\([^(]\+\)('
   let vcg.end_function_pattern = '^\s*endfu\%[nction]'
   let vcg.function_call_pattern = '\(\h[#.a-zA-Z0-9_{}]\+\)('
+  let vcg.function_object_pattern = '^\([^.]\+\.\)'
 
   func vcg.parse(file, ...) dict
     if a:0
@@ -32,6 +33,7 @@ function! VimCallGraph()
     let self.function_stack = ['__GLOBAL__']  " global scope
     let self.functions = {}
     call self.add_function(self.top_function())
+    " let self.current_object = ''
     let self.vim_functions = readfile('vimfuncs.txt')
     let self.out = []
   endfunc
@@ -44,7 +46,13 @@ function! VimCallGraph()
   endfunc
 
   func vcg.push_function(name) dict
-    call add(self.function_stack, a:name)
+    let name = a:name
+    call add(self.function_stack, name)
+      echo 'name=' . name
+    if match(name, self.function_object_pattern) != -1
+      echo 'name=' . name
+      let self.current_object = matchlist(name, self.function_object_pattern)[1]
+    endif
   endfunc
 
   func vcg.top_function() dict
@@ -86,7 +94,10 @@ function! VimCallGraph()
     while match(line, self.function_call_pattern) != -1
       let name = matchlist(line, self.function_call_pattern)[1]
       " TODO: hack - collect the self -> dict from the top_function()
-      let name = substitute(name, 'self\.', 'sin.', 'g')
+      " let name = substitute(name, 'self\.', 'sin.', 'g')
+      if match(name, 'self\.') != -1
+        let name = substitute(name, 'self\.', self.current_object, 'g')
+      endif
       call self.add_function_call(name)
       let line = substitute(line, self.function_call_pattern, '', '')
     endwhile
