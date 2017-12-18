@@ -1,3 +1,11 @@
+"" ============================================================================
+" File:        plugin/vimcallgraph.vim
+" Description: A hierarchical marks manager with treeview
+" Author:      Barry Arthur <barry dot arthur at gmail dot com>
+" Licence:     Vim licence
+" Website:     https://github.com/dahu/VimCallGraph
+" Version:     0.1 (pre-release)
+"" ============================================================================
 
 function! VimCallGraph()
   let vcg = {}
@@ -48,9 +56,9 @@ function! VimCallGraph()
   func vcg.push_function(name) dict
     let name = a:name
     call add(self.function_stack, name)
-      echo 'name=' . name
+      " echo 'name=' . name
     if match(name, self.function_object_pattern) != -1
-      echo 'name=' . name
+      " echo 'name=' . name
       let self.current_object = matchlist(name, self.function_object_pattern)[1]
     endif
   endfunc
@@ -126,5 +134,5 @@ endfunction
 
 " finish
 " test
-let vcg = VimCallGraph()
-call writefile(vcg.parse('sintax.vim'), 'sintax.dot')
+" let vcg = VimCallGraph()
+" call writefile(vcg.parse('sintax.vim'), 'sintax.dot')
