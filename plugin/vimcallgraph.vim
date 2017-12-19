@@ -1,6 +1,6 @@
 "" ============================================================================
 " File:        plugin/vimcallgraph.vim
-" Description: A hierarchical marks manager with treeview
+" Description: Generate a Graphviz graph of the call chain within a vim script
 " Author:      Barry Arthur <barry dot arthur at gmail dot com>
 " Licence:     Vim licence
 " Website:     https://github.com/dahu/VimCallGraph
