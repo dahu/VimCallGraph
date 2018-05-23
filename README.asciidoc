@@ -4,3 +4,12 @@ VimCallGraph
 __neato!__
 
 Graphviz call graph visualisation for Vimscript.
+
+Quick Usage Instructions
+
+NOTE: This assumes that you're in the VimCallGraph directory, containing the `plugin` subdirectory.
+
+  :let vcg = VimCallGraph()
+  :call vcg.parse("plugin/vimcallgraph.vim")
+  :enew
+  :call setline(1, vcg.output())
